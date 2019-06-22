@@ -1,0 +1,56 @@
+package com.gu.chatroom.controller;
+
+import com.gu.chatroom.services.CaptchaServices;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @className: com.gu.chatroom.controller.CaptchaController
+ * @description: CaptchaController - TODO
+ * @version: v1.0.0
+ * @date: 2019/6/16 11:20
+ * @author: haoduor
+ */
+
+@Controller
+@RequestMapping("/captcha")
+public class CaptchaController {
+
+    @Autowired
+    private CaptchaServices captcha;
+
+    @ResponseBody
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public void createCode(HttpServletRequest request, HttpServletResponse response) {
+        captcha.getCaptcha(response);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public Map<String, Object> testCode(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        Map<String, Object> res = new HashMap<>(4);
+        res.put("id", session.getId());
+        res.put("sess", session);
+        if (session.getAttribute("aaa") == null) {
+            session.setAttribute("aaa", 1);
+            res.put("aaa", session.getAttribute("aaa"));
+        }else {
+            int temp = (int)session.getAttribute("aaa") + 1;
+            session.setAttribute("aaa", temp);
+            res.put("aaa", session.getAttribute("aaa"));
+        }
+
+        return res;
+    }
+}

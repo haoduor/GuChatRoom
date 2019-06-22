@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gu.chatroom.dao.BannedMapper" >
+  <resultMap id="BaseResultMap" type="com.gu.chatroom.model.Banned" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="banned_user_id" property="bannedUserId" jdbcType="INTEGER" />
+    <result column="banned_level" property="bannedLevel" jdbcType="INTEGER" />
+    <result column="banned_room_id" property="bannedRoomId" jdbcType="INTEGER" />
+    <result column="banned_channel_id" property="bannedChannelId" jdbcType="INTEGER" />
+    <result column="banned_time" property="bannedTime" jdbcType="TIMESTAMP" />
+    <result column="banned_reason" property="bannedReason" jdbcType="VARCHAR" />
+    <result column="is_forever_banned" property="isForeverBanned" jdbcType="BIT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="banned_to_time" property="bannedToTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, banned_user_id, banned_level, banned_room_id, banned_channel_id, banned_time, 
+    banned_reason, is_forever_banned, create_time, create_user_id, banned_to_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gu.chatroom.model.BannedExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from banned
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from banned
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from banned
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gu.chatroom.model.BannedExample" >
+    delete from banned
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gu.chatroom.model.Banned" >
+    insert into banned (id, banned_user_id, banned_level, 
+      banned_room_id, banned_channel_id, banned_time, 
+      banned_reason, is_forever_banned, create_time, 
+      create_user_id, banned_to_time)
+    values (#{id,jdbcType=INTEGER}, #{bannedUserId,jdbcType=INTEGER}, #{bannedLevel,jdbcType=INTEGER}, 
+      #{bannedRoomId,jdbcType=INTEGER}, #{bannedChannelId,jdbcType=INTEGER}, #{bannedTime,jdbcType=TIMESTAMP}, 
+      #{bannedReason,jdbcType=VARCHAR}, #{isForeverBanned,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=INTEGER}, #{bannedToTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gu.chatroom.model.Banned" >
+    insert into banned
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bannedUserId != null" >
+        banned_user_id,
+      </if>
+      <if test="bannedLevel != null" >
+        banned_level,
+      </if>
+      <if test="bannedRoomId != null" >
+        banned_room_id,
+      </if>
+      <if test="bannedChannelId != null" >
+        banned_channel_id,
+      </if>
+      <if test="bannedTime != null" >
+        banned_time,
+      </if>
+      <if test="bannedReason != null" >
+        banned_reason,
+      </if>
+      <if test="isForeverBanned != null" >
+        is_forever_banned,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="bannedToTime != null" >
+        banned_to_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bannedUserId != null" >
+        #{bannedUserId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedLevel != null" >
+        #{bannedLevel,jdbcType=INTEGER},
+      </if>
+      <if test="bannedRoomId != null" >
+        #{bannedRoomId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedChannelId != null" >
+        #{bannedChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedTime != null" >
+        #{bannedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bannedReason != null" >
+        #{bannedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isForeverBanned != null" >
+        #{isForeverBanned,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedToTime != null" >
+        #{bannedToTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gu.chatroom.model.BannedExample" resultType="java.lang.Integer" >
+    select count(*) from banned
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update banned
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannedUserId != null" >
+        banned_user_id = #{record.bannedUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannedLevel != null" >
+        banned_level = #{record.bannedLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannedRoomId != null" >
+        banned_room_id = #{record.bannedRoomId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannedChannelId != null" >
+        banned_channel_id = #{record.bannedChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannedTime != null" >
+        banned_time = #{record.bannedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bannedReason != null" >
+        banned_reason = #{record.bannedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isForeverBanned != null" >
+        is_forever_banned = #{record.isForeverBanned,jdbcType=BIT},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUserId != null" >
+        create_user_id = #{record.createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bannedToTime != null" >
+        banned_to_time = #{record.bannedToTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update banned
+    set id = #{record.id,jdbcType=INTEGER},
+      banned_user_id = #{record.bannedUserId,jdbcType=INTEGER},
+      banned_level = #{record.bannedLevel,jdbcType=INTEGER},
+      banned_room_id = #{record.bannedRoomId,jdbcType=INTEGER},
+      banned_channel_id = #{record.bannedChannelId,jdbcType=INTEGER},
+      banned_time = #{record.bannedTime,jdbcType=TIMESTAMP},
+      banned_reason = #{record.bannedReason,jdbcType=VARCHAR},
+      is_forever_banned = #{record.isForeverBanned,jdbcType=BIT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      create_user_id = #{record.createUserId,jdbcType=INTEGER},
+      banned_to_time = #{record.bannedToTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gu.chatroom.model.Banned" >
+    update banned
+    <set >
+      <if test="bannedUserId != null" >
+        banned_user_id = #{bannedUserId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedLevel != null" >
+        banned_level = #{bannedLevel,jdbcType=INTEGER},
+      </if>
+      <if test="bannedRoomId != null" >
+        banned_room_id = #{bannedRoomId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedChannelId != null" >
+        banned_channel_id = #{bannedChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedTime != null" >
+        banned_time = #{bannedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bannedReason != null" >
+        banned_reason = #{bannedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isForeverBanned != null" >
+        is_forever_banned = #{isForeverBanned,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="bannedToTime != null" >
+        banned_to_time = #{bannedToTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gu.chatroom.model.Banned" >
+    update banned
+    set banned_user_id = #{bannedUserId,jdbcType=INTEGER},
+      banned_level = #{bannedLevel,jdbcType=INTEGER},
+      banned_room_id = #{bannedRoomId,jdbcType=INTEGER},
+      banned_channel_id = #{bannedChannelId,jdbcType=INTEGER},
+      banned_time = #{bannedTime,jdbcType=TIMESTAMP},
+      banned_reason = #{bannedReason,jdbcType=VARCHAR},
+      is_forever_banned = #{isForeverBanned,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      banned_to_time = #{bannedToTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

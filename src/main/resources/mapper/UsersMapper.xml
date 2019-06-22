@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gu.chatroom.dao.UsersMapper" >
+  <resultMap id="BaseResultMap" type="com.gu.chatroom.model.Users" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="head_pic_url" property="headPicUrl" jdbcType="VARCHAR" />
+    <result column="status_id" property="statusId" jdbcType="INTEGER" />
+    <result column="is_first_login" property="isFirstLogin" jdbcType="BIT" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="last_logout_time" property="lastLogoutTime" jdbcType="TIMESTAMP" />
+    <result column="is_deleted" property="isDeleted" jdbcType="BIT" />
+    <result column="is_hidden" property="isHidden" jdbcType="BIT" />
+    <result column="is_locked" property="isLocked" jdbcType="BIT" />
+    <result column="last_speak_time" property="lastSpeakTime" jdbcType="TIMESTAMP" />
+    <result column="resigter_time" property="resigterTime" jdbcType="TIMESTAMP" />
+    <result column="all_messages" property="allMessages" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, username, token, salt, password, head_pic_url, status_id, is_first_login, last_login_time, 
+    last_logout_time, is_deleted, is_hidden, is_locked, last_speak_time, resigter_time, 
+    all_messages, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gu.chatroom.model.UsersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from users
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gu.chatroom.model.UsersExample" >
+    delete from users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gu.chatroom.model.Users" >
+    insert into users (id, username, token, 
+      salt, password, head_pic_url, 
+      status_id, is_first_login, last_login_time, 
+      last_logout_time, is_deleted, is_hidden, 
+      is_locked, last_speak_time, resigter_time, 
+      all_messages, remark)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{headPicUrl,jdbcType=VARCHAR}, 
+      #{statusId,jdbcType=INTEGER}, #{isFirstLogin,jdbcType=BIT}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+      #{lastLogoutTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT}, #{isHidden,jdbcType=BIT}, 
+      #{isLocked,jdbcType=BIT}, #{lastSpeakTime,jdbcType=TIMESTAMP}, #{resigterTime,jdbcType=TIMESTAMP}, 
+      #{allMessages,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gu.chatroom.model.Users" >
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="headPicUrl != null" >
+        head_pic_url,
+      </if>
+      <if test="statusId != null" >
+        status_id,
+      </if>
+      <if test="isFirstLogin != null" >
+        is_first_login,
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time,
+      </if>
+      <if test="lastLogoutTime != null" >
+        last_logout_time,
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted,
+      </if>
+      <if test="isHidden != null" >
+        is_hidden,
+      </if>
+      <if test="isLocked != null" >
+        is_locked,
+      </if>
+      <if test="lastSpeakTime != null" >
+        last_speak_time,
+      </if>
+      <if test="resigterTime != null" >
+        resigter_time,
+      </if>
+      <if test="allMessages != null" >
+        all_messages,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="headPicUrl != null" >
+        #{headPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="statusId != null" >
+        #{statusId,jdbcType=INTEGER},
+      </if>
+      <if test="isFirstLogin != null" >
+        #{isFirstLogin,jdbcType=BIT},
+      </if>
+      <if test="lastLoginTime != null" >
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLogoutTime != null" >
+        #{lastLogoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="isHidden != null" >
+        #{isHidden,jdbcType=BIT},
+      </if>
+      <if test="isLocked != null" >
+        #{isLocked,jdbcType=BIT},
+      </if>
+      <if test="lastSpeakTime != null" >
+        #{lastSpeakTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resigterTime != null" >
+        #{resigterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allMessages != null" >
+        #{allMessages,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gu.chatroom.model.UsersExample" resultType="java.lang.Integer" >
+    select count(*) from users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update users
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.token != null" >
+        token = #{record.token,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salt != null" >
+        salt = #{record.salt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.headPicUrl != null" >
+        head_pic_url = #{record.headPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statusId != null" >
+        status_id = #{record.statusId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isFirstLogin != null" >
+        is_first_login = #{record.isFirstLogin,jdbcType=BIT},
+      </if>
+      <if test="record.lastLoginTime != null" >
+        last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLogoutTime != null" >
+        last_logout_time = #{record.lastLogoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        is_deleted = #{record.isDeleted,jdbcType=BIT},
+      </if>
+      <if test="record.isHidden != null" >
+        is_hidden = #{record.isHidden,jdbcType=BIT},
+      </if>
+      <if test="record.isLocked != null" >
+        is_locked = #{record.isLocked,jdbcType=BIT},
+      </if>
+      <if test="record.lastSpeakTime != null" >
+        last_speak_time = #{record.lastSpeakTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.resigterTime != null" >
+        resigter_time = #{record.resigterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.allMessages != null" >
+        all_messages = #{record.allMessages,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update users
+    set id = #{record.id,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      token = #{record.token,jdbcType=VARCHAR},
+      salt = #{record.salt,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      head_pic_url = #{record.headPicUrl,jdbcType=VARCHAR},
+      status_id = #{record.statusId,jdbcType=INTEGER},
+      is_first_login = #{record.isFirstLogin,jdbcType=BIT},
+      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      last_logout_time = #{record.lastLogoutTime,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=BIT},
+      is_hidden = #{record.isHidden,jdbcType=BIT},
+      is_locked = #{record.isLocked,jdbcType=BIT},
+      last_speak_time = #{record.lastSpeakTime,jdbcType=TIMESTAMP},
+      resigter_time = #{record.resigterTime,jdbcType=TIMESTAMP},
+      all_messages = #{record.allMessages,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gu.chatroom.model.Users" >
+    update users
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="headPicUrl != null" >
+        head_pic_url = #{headPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="statusId != null" >
+        status_id = #{statusId,jdbcType=INTEGER},
+      </if>
+      <if test="isFirstLogin != null" >
+        is_first_login = #{isFirstLogin,jdbcType=BIT},
+      </if>
+      <if test="lastLoginTime != null" >
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLogoutTime != null" >
+        last_logout_time = #{lastLogoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="isHidden != null" >
+        is_hidden = #{isHidden,jdbcType=BIT},
+      </if>
+      <if test="isLocked != null" >
+        is_locked = #{isLocked,jdbcType=BIT},
+      </if>
+      <if test="lastSpeakTime != null" >
+        last_speak_time = #{lastSpeakTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resigterTime != null" >
+        resigter_time = #{resigterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allMessages != null" >
+        all_messages = #{allMessages,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gu.chatroom.model.Users" >
+    update users
+    set username = #{username,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      head_pic_url = #{headPicUrl,jdbcType=VARCHAR},
+      status_id = #{statusId,jdbcType=INTEGER},
+      is_first_login = #{isFirstLogin,jdbcType=BIT},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      last_logout_time = #{lastLogoutTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT},
+      is_hidden = #{isHidden,jdbcType=BIT},
+      is_locked = #{isLocked,jdbcType=BIT},
+      last_speak_time = #{lastSpeakTime,jdbcType=TIMESTAMP},
+      resigter_time = #{resigterTime,jdbcType=TIMESTAMP},
+      all_messages = #{allMessages,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
