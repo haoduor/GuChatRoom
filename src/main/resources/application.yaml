@@ -28,7 +28,7 @@ spring:
         check-template-location: true
         mode: LEGACYHTML5
     datasource:
-        url: jdbc:mysql://192.168.0.105/chat_room?useUnicode=true&characterEncoding=utf-8
+        url: jdbc:mysql://192.168.0.106/chat_room?useUnicode=true&characterEncoding=utf-8
         username: root
         password: root
         driver-class-name: com.mysql.jdbc.Driver

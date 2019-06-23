@@ -48,9 +48,8 @@ public class UserController {
         if (!currentUser.isAuthenticated()) {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             currentUser.login(token);
+        }else {
         }
-
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 
         return null;
     }

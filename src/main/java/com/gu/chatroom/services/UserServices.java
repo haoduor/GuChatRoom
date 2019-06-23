@@ -2,6 +2,8 @@ package com.gu.chatroom.services;
 
 import com.gu.chatroom.model.Users;
 
+import javax.validation.Valid;
+
 /**
  * @className: com.gu.chatroom.services.UserServices
  * @description: UserServices - TODO
@@ -10,6 +12,6 @@ import com.gu.chatroom.model.Users;
  * @author: haoduor
  */
 public interface UserServices {
-    Users getUserbyid(int id);
-
+    Users getUserbyid(@Valid int id);
+    public Users getUserByName(@Valid String username);
 }
