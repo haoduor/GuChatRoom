@@ -1,6 +1,7 @@
 package com.gu.chatroom.tools;
 
-import cn.hutool.crypto.SecureUtil;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 
 /**
  * @className: com.gu.chatroom.tools.GuTool
@@ -20,9 +21,18 @@ public class GuTool {
      */
     public static String doEncrypt(String password, String salt) {
         if (password != null && salt != null) {
-            password = SecureUtil.md5(password);
-            return SecureUtil.md5(password + salt);
+            SimpleHash hash = new SimpleHash("MD5", password, salt, 3);
+            return hash.toString();
         }
         return null;
     }
+
+    public static String doEncrypt(String password, ByteSource salt) {
+        if (password != null && salt != null) {
+            SimpleHash hash = new SimpleHash("MD5", password, salt, 3);
+            return hash.toString();
+        }
+        return null;
+    }
+
 }

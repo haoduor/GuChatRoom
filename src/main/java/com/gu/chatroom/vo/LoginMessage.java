@@ -17,4 +17,12 @@ public class LoginMessage extends BaseMessage{
     public static LoginMessage UnknownUsername() {
         return new LoginMessage(1, "无效用户名");
     }
+
+    public static LoginMessage LoginSuccess() {
+        return new LoginMessage(0, "登录成功");
+    }
+
+    public static LoginMessage NullLogin() {
+        return new LoginMessage(-1, "未知的登录错误");
+    }
 }

@@ -1,10 +1,12 @@
 package com.gu.chatroom.shiro;
 
+import com.gu.chatroom.model.Users;
 import com.gu.chatroom.services.UserServices;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -28,12 +30,23 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
     throws AuthenticationException {
         UsernamePasswordToken upToken = (UsernamePasswordToken) authenticationToken;
+
         String username = upToken.getUsername();
+        Users user = userServices.getUserByName(username);
 
+        if (username != null) {
+            if (! username.equals(user.getUsername())) {
+                throw new UnknownAccountException();
+            }
+        }else {
+            throw new UnknownAccountException();
+        }
 
+        String password = user.getPassword();
+        String salt  = user.getSalt();
         String realmName = getName();
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo();
-        return null;
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, password, ByteSource.Util.bytes(salt), realmName);
+        return info;
     }
 
 }

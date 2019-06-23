@@ -1,10 +1,12 @@
 package com.gu.chatroom.shiro;
 
-import org.apache.shiro.authc.AuthenticationException;
+import com.gu.chatroom.tools.GuTool;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
+import org.apache.shiro.util.ByteSource;
 
 /**
  * @className: com.gu.chatroom.shiro.UserCredentialsMatcher
@@ -16,13 +18,17 @@ import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 public class UserCredentialsMatcher extends SimpleCredentialsMatcher {
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-        if (info instanceof SimpleAuthenticationInfo) {
+        if (info instanceof SimpleAuthenticationInfo && token instanceof UsernamePasswordToken) {
+            SimpleAuthenticationInfo dbinfo = (SimpleAuthenticationInfo) info;
+            ByteSource salt = dbinfo.getCredentialsSalt();
 
+            String password = String.valueOf(((UsernamePasswordToken)token).getPassword());
+            String inpassword = GuTool.doEncrypt(password, salt);
+            String dbpassword = (String)dbinfo.getCredentials();
+            return equals(inpassword, dbpassword);
         }
         else {
-            throw new AuthenticationException();
+            return false;
         }
-
-        return super.doCredentialsMatch(token, info);
     }
 }

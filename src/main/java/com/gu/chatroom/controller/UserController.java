@@ -2,6 +2,7 @@ package com.gu.chatroom.controller;
 
 import com.gu.chatroom.model.Users;
 import com.gu.chatroom.services.UserServices;
+import com.gu.chatroom.vo.LoginMessage;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -41,17 +42,17 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/login")
-    public Map<String, Object> userLogin(@RequestParam("username") String username,
+    public LoginMessage userLogin(@RequestParam("username") String username,
             @RequestParam("password") String password) {
         Subject currentUser = SecurityUtils.getSubject();
 
         if (!currentUser.isAuthenticated()) {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             currentUser.login(token);
+            return LoginMessage.LoginSuccess();
         }else {
+            return LoginMessage.NullLogin();
         }
-
-        return null;
     }
 
     @GetMapping("/register")
