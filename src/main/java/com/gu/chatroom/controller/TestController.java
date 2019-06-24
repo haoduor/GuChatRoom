@@ -4,6 +4,9 @@ import com.gu.chatroom.model.Users;
 import com.gu.chatroom.services.UserServices;
 import com.gu.chatroom.vo.BaseMessage;
 import com.gu.chatroom.vo.LoginMessage;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,5 +38,13 @@ public class TestController {
     @GetMapping("/users")
     public Users testUsers(@RequestParam("name") String username) {
         return userServices.getUserByName(username);
+    }
+
+    @ResponseBody
+    @GetMapping("/userC")
+    public Object getUserCaptcha() {
+        Subject subject = SecurityUtils.getSubject();
+        Session s = subject.getSession();
+        return s.getAttribute("code");
     }
 }

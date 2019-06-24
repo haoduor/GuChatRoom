@@ -3,9 +3,6 @@ package com.gu.chatroom.controller;
 import com.gu.chatroom.model.Users;
 import com.gu.chatroom.services.UserServices;
 import com.gu.chatroom.vo.LoginMessage;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,18 +38,11 @@ public class UserController {
     }
 
     @ResponseBody
-    @PostMapping("/login")
+    @PostMapping(path = {"/login", "/"})
     public LoginMessage userLogin(@RequestParam("username") String username,
-            @RequestParam("password") String password) {
-        Subject currentUser = SecurityUtils.getSubject();
-
-        if (!currentUser.isAuthenticated()) {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            currentUser.login(token);
-            return LoginMessage.LoginSuccess();
-        }else {
-            return LoginMessage.NullLogin();
-        }
+            @RequestParam("password") String password,
+            @RequestParam("code") String code) {
+        return userServices.userLogin(username, password, code);
     }
 
     @GetMapping("/register")

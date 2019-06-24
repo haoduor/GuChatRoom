@@ -4,17 +4,31 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script th:src="@{js/vue.js}"></script>
-    <script>
-
-    </script>
 </head>
 <body>
-    <form action="#" method="post">
-        <input type="text" name="username"/>
+    <form action="#" method="post" id="form">
+        <input type="text" placeholder="用户名" name="username" required="required"/>
         <br>
-        <input type="password" name="password"/>
+        <input type="password" placeholder="密码" name="password" required="required"/>
+        <br>
+        <input type="text" placeholder="验证码" name="code" required="required">
+        <img v-bind:src="captchUrl" alt="" v-on:click="refreshCode" id="code">
+        <button v-on:click="refreshCode">刷新验证码</button>
         <br>
         <input type="submit" value="登陆">
     </form>
 </body>
+<script>
+    var app = new Vue({
+        el:'#form',
+        data: {
+            'captchUrl': '/captcha/get'
+        },
+        methods: {
+            refreshCode() {
+                this.captchUrl = '/captcha/get?r='+Date.now();
+            }
+        }
+    });
+</script>
 </html>

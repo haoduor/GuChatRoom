@@ -1,6 +1,7 @@
 package com.gu.chatroom.services;
 
 import com.gu.chatroom.model.Users;
+import com.gu.chatroom.vo.LoginMessage;
 
 import javax.validation.Valid;
 
@@ -13,5 +14,6 @@ import javax.validation.Valid;
  */
 public interface UserServices {
     Users getUserbyid(@Valid int id);
-    public Users getUserByName(@Valid String username);
+    Users getUserByName(@Valid String username);
+    LoginMessage userLogin(String username, String password, String code);
 }

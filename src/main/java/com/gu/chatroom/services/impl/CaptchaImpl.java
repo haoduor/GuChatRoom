@@ -4,7 +4,10 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ImageUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.gu.chatroom.services.CaptchaServices;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +30,13 @@ public class CaptchaImpl implements CaptchaServices {
     public void getCaptcha(HttpServletResponse response) {
         LineCaptcha captcha = CaptchaUtil.createLineCaptcha(200, 100, 6, 200);
 
-        Image image = captcha.createImage("wwwwww");
+        String code = RandomUtil.randomString(6);
+
+        // 重新设置用户的session
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute("code", code);
+
+        Image image = captcha.createImage(code);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ImageUtil.writePng(image, out);
 
