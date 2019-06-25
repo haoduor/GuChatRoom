@@ -37,6 +37,8 @@ public class UserRealm extends AuthorizingRealm {
         if (username != null) {
             if (! username.equals(user.getUsername())) {
                 throw new UnknownAccountException();
+            }else if (user.getIsLocked()) {
+                throw new LockedAccountException();
             }
         }else {
             throw new UnknownAccountException();

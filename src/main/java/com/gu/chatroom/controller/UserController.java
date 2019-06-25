@@ -3,15 +3,11 @@ package com.gu.chatroom.controller;
 import com.gu.chatroom.model.Users;
 import com.gu.chatroom.services.UserServices;
 import com.gu.chatroom.vo.LoginMessage;
+import com.gu.chatroom.vo.RegisterForm;
+import com.gu.chatroom.vo.RegisterMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @className: com.gu.chatroom.controller.UserController
@@ -52,7 +48,7 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/register")
-    public Map<String, Object> userRegister(HttpServletRequest request) {
-        return null;
+    public RegisterMessage userRegister(@RequestBody RegisterForm form) {
+        return userServices.userRegister(form);
     }
 }

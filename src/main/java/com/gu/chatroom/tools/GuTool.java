@@ -3,6 +3,8 @@ package com.gu.chatroom.tools;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
+import java.lang.reflect.Field;
+
 /**
  * @className: com.gu.chatroom.tools.GuTool
  * @description: GuTool - 鸽子工具类
@@ -33,6 +35,28 @@ public class GuTool {
             return hash.toString();
         }
         return null;
+    }
+
+    public static boolean checkNotNull(Object obj) {
+        if (obj != null) {
+            Class<?> cls = obj.getClass();
+            Field[] fields = cls.getDeclaredFields();
+            for (Field field : fields) {
+                Object val = null;
+                field.setAccessible(true);
+                try {
+                    val = field.get(obj);
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                if(val == null) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 }

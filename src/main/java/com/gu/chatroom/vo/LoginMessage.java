@@ -38,8 +38,14 @@ public class LoginMessage extends BaseMessage{
         return new LoginMessage(4, "验证码错误");
     }
 
+    public static LoginMessage TooManyTries() {
+        return new LoginMessage(5, "尝试次数过多, 请稍后再试");
+    }
+
     public static LoginMessage LoginAlready() {
         return new LoginMessage(10, "已经登录过了");
     }
+
+
 
 }

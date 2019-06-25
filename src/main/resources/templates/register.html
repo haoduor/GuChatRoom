@@ -3,10 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>register</title>
+    <script th:src="@{js/vue.js}"></script>
+    <script th:src="@{js/axios.js}"></script>
 </head>
 <body>
-    <form action="#">
-        <input type="text">
-    </form>
+    <div id="register">
+        <form v-on:submit.prevent="onSubmit">
+            <input type="text" placeholder="用户名" name="username" v-model="username" required="required">
+            <br>
+            <input type="password" placeholder="密码" name="password" v-model="password" required="required">
+            <br>
+            <input type="password" placeholder="请再次输入密码" name="repassword" v-model="repassword" required="required">
+            <span v-if="samePassword">两次密码输入不正确</span>
+            <br>
+            <input type="text" placeholder="验证码" name="code" required="required" v-model="code">
+            <img v-bind:src="captchUrl" alt="" v-on:click="refreshCode" id="code">
+            <button v-on:click="refreshCode">刷新验证码</button>
+            <br>
+            <input type="submit" value="注册">
+        </form>
+        <div v-if="is_submit">{{ formData }}</div>
+        <button v-if="is_submit"><a href="/login">转到主页</a></button>
+    </div>
+    
+    <script>
+        var app = new Vue({
+            el: '#register',
+            data: {
+                username: '',
+                password: '',
+                repassword: '',
+                code: '',
+                captchUrl: '/captcha/get',
+                samePassword: false,
+                formData: '',
+                is_submit: false
+            },
+            watch: {
+                repassword: function(val) {
+                    this.samePassword = !(this.repassword == this.password);
+                }
+            },
+            methods: {
+                onSubmit() {
+                    axios.post("#", {
+                        username: this.username,
+                        password: this.password,
+                        repassword: this.repassword,
+                        code: this.code
+                    }).then(function(response) {
+                        app.is_submit = true;
+                        app.formData = response.data;
+                        console.log(response.data);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                },
+                refreshCode() {
+                    this.captchUrl = '/captcha/get?r='+Date.now();
+                },
+            }
+        });
+    </script>
 </body>
 </html>

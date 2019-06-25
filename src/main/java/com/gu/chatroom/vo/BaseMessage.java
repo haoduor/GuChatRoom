@@ -10,7 +10,6 @@ import lombok.Data;
  * @date: 2019/6/22 22:03
  * @author: haoduor
  */
-
 @Data
 @AllArgsConstructor
 public class BaseMessage {
